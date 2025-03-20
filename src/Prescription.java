@@ -37,8 +37,8 @@ public class Prescription {
     public static Prescription makePrescription( String line ) {
         try {
             Prescription newPr = null;
-            SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
-            String[] tokens = line.split(",");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String[] tokens = line.split(",+");
 
             newPr = new Prescription( tokens[3], df.parse( tokens[4] ), parseInt( tokens[5] ), tokens[6] );
 

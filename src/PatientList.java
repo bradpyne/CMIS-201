@@ -178,8 +178,8 @@ public class PatientList {
                 index++;
             }
 
-            mergeSort( pats );
-            patientArray = pats;
+            patientArray = mergeSort( pats );
+
         } catch (FileNotFoundException e) {
             result = false;
         }
@@ -197,11 +197,6 @@ public class PatientList {
         try {
             scanner = new Scanner( file );
             while( scanner.hasNextLine() ) {
-                //SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
-                //String[] tokens = scanner.nextLine().split(", ");
-                //PatientIdentity patID = new PatientIdentity( new Name( tokens[1], tokens[0] ), df.parse( tokens[2] ) );
-                //find( patID ).getPrescriptionList().add( new Prescription( tokens[3], df.parse( tokens[4] ), parseInt( tokens[5] ), tokens[6] ));
-
                 String line = scanner.nextLine();
 
                 pr = Prescription.makePrescription( line );

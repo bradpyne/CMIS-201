@@ -144,7 +144,8 @@ class PatientListTest {
         PatientList patList = new PatientList();
 
         assertTrue( patList.importAndMergeSort("patients1000.csv") );
-        patList.diag();
+        patList.initIteration();
+        assertEquals("Alvarez, Barbara", patList.next().getPatientIdentity().getName().fullName() );
     }
 
 
@@ -154,7 +155,13 @@ class PatientListTest {
 
         assertTrue( patList.importFromFile("patients1000.csv") );
         assertTrue( patList.importPrescriptions("prescriptions1000.csv"));
-        //patList.diag();
+
+        patList.initIteration();
+        PrescriptionList prList = patList.next().getPrescriptionList();
+        prList.initIteration();
+
+        //expected result: first patient Alvarez, Barbara - most recent script fantamycin issued sept 2023
+        assertEquals("fantamycin", prList.next().getScriptName() );
 
     }
 

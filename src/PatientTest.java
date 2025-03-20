@@ -45,7 +45,7 @@ class PatientTest {
         try {
             Patient pat1 = new Patient( new PatientIdentity(new Name("Ernie", "Floyd"), dateFormatter.parse("1999-10-10")));
 
-            assertEquals( "Floyd, Ernie, 10-10-1999", pat1.toCSV() );
+            assertEquals( "Floyd, Ernie, 1999-10-10", pat1.toCSV() );
 
         } catch ( ParseException e ) {
             throw new RuntimeException(e);
@@ -56,7 +56,7 @@ class PatientTest {
     void makePatient() {
         try {
             Patient pat1 = new Patient( new PatientIdentity(new Name("Ben", "Hur"), dateFormatter.parse("1959-11-18")));
-            Patient pat2 = Patient.makePatient("Hur,Ben,11-18-1959");
+            Patient pat2 = Patient.makePatient("Hur,Ben,1959-11-18");
 
             assertTrue( pat1.getPatientIdentity().match( pat2.getPatientIdentity() ) );
 
