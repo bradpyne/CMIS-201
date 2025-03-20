@@ -40,10 +40,11 @@ public class Prescription {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String[] tokens = line.split(",+");
 
-            newPr = new Prescription( tokens[3], df.parse( tokens[4] ), parseInt( tokens[5] ), tokens[6] );
+            if( tokens.length >= 7 ) {
+                newPr = new Prescription(tokens[3], df.parse(tokens[4]), parseInt(tokens[5]), tokens[6]);
+            }
 
             return newPr;
-
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

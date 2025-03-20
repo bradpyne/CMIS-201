@@ -29,7 +29,10 @@ public class Patient {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String[] tokens = line.split(",");
 
-            newPat = new Patient(new PatientIdentity(new Name(tokens[1], tokens[0]), df.parse(tokens[2])));
+            if( tokens.length >= 3 )  {
+                newPat = new Patient(new PatientIdentity(new Name(tokens[1], tokens[0]), df.parse(tokens[2])));
+            }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
