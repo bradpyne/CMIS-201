@@ -3,11 +3,11 @@ import java.util.Date;
 
 public class Patient {
     private PatientIdentity patientID;
-    private PrescriptionList patList;
+    private PrescriptionList prList;
 
     Patient(PatientIdentity patID) {
         patientID = patID;
-        patList = new PrescriptionList();
+        prList = new PrescriptionList();
     }
 
     public PatientIdentity getPatientIdentity() {
@@ -15,7 +15,7 @@ public class Patient {
     }
 
     public PrescriptionList getPrescriptionList() {
-        return patList;
+        return prList;
     }
 
     public String toCSV() {
@@ -27,7 +27,7 @@ public class Patient {
         Patient newPat = null;
         try {
             SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
-            String[] tokens = line.split(", ");
+            String[] tokens = line.split(",");
 
             newPat = new Patient(new PatientIdentity(new Name(tokens[1], tokens[0]), df.parse(tokens[2])));
         } catch (Exception e) {

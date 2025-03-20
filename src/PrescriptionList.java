@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Scanner;
+
 public class PrescriptionList {
     private ListRecord head;
     //private ListRecord tail;
@@ -32,7 +37,7 @@ public class PrescriptionList {
                 head = newRecord;
             } else {
                 before = head;
-                while ( comesBefore(before.next.data, newRecord.data) && (before.next != null) ) {
+                while ( (before.next != null) && comesBefore(before.next.data, newRecord.data) ) {
                     before = before.next;
                 }
 
@@ -42,10 +47,24 @@ public class PrescriptionList {
         }
     }
 
+    public int count() {
+        int count = 0;
+        ListRecord current = head;
+
+        while( current != null ) {
+            count++;
+            current = current.next;
+        }
+
+        return count;
+    }
+
     public boolean comesBeforeTest( Prescription p1, Prescription p2 ) {
         return comesBefore( p1, p2 );
     }
 
+
+    //move into ListRecord, return T if record is null
     private static boolean comesBefore( Prescription pre1, Prescription pre2 ) {
         return ( pre1.getIssueDate().compareTo( pre2.getIssueDate() ) > 0);
     }
@@ -58,6 +77,10 @@ public class PrescriptionList {
             data = pr;
             next = null;
         }
+
+        /*public comesBefore( Prescription pr ) {
+            return ( data.getIssueDate().compareTo( pr.getIssueDate() ) > 0 );
+         */
 
         private ListRecord head;
     }

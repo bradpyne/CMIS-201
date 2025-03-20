@@ -56,7 +56,7 @@ class PatientTest {
     void makePatient() {
         try {
             Patient pat1 = new Patient( new PatientIdentity(new Name("Ben", "Hur"), dateFormatter.parse("1959-11-18")));
-            Patient pat2 = Patient.makePatient("Hur, Ben, 11-18-1959");
+            Patient pat2 = Patient.makePatient("Hur,Ben,11-18-1959");
 
             assertTrue( pat1.getPatientIdentity().match( pat2.getPatientIdentity() ) );
 
