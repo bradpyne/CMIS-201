@@ -15,25 +15,9 @@ class PatientListTest {
 
             assertTrue( patList.add( new Patient( new PatientIdentity( new Name("Johnny", "Bravo"), dateFormatter.parse("1985-05-15") ) ) ) );
 
-
-            String[] firstNames = { "A", "b", "c", "d", "e"};
-            String[] lastNames = { "A", "b", "c", "d", "e"};
-            for( int i=0;  i < firstNames.length; i++) {
-                for ( int p=0;  p< lastNames.length; p++) {
-                    patList.add( new Patient( new PatientIdentity( new Name( firstNames[i], lastNames[p]), dateFormatter.parse("1985-05-15") ) ) );
-                }
-            }
-            patList.diag();
-
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-
-
-
-
-
-
     }
 
     @org.junit.jupiter.api.Test
@@ -88,7 +72,6 @@ class PatientListTest {
             patList.initIteration();
             Patient nextPat = patList.next();
             Patient nextPat2 = patList.next();
-
 
             assertEquals( pat3 , nextPat );
             assertEquals( pat2 , nextPat2 );
