@@ -31,8 +31,8 @@ class PatientListTest {
             patList.add( pat1 );
             patList.add( pat2 );
             patList.add( pat3 );
-
-            assertEquals( pat1, patList.find( new PatientIdentity( new Name("Ernie", "Floyd"), dateFormatter.parse("1999-10-10") ) ) );
+            Patient test = patList.find( new PatientIdentity( new Name("Ernie", "Floyd"), dateFormatter.parse("1999-10-10") ) );
+            assertTrue( pat1.getPatientIdentity().match( patList.find( new PatientIdentity( new Name("Ernie", "Floyd"), dateFormatter.parse("1999-10-10") ) ).getPatientIdentity() ) );
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

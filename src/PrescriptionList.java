@@ -47,6 +47,26 @@ public class PrescriptionList {
         }
     }
 
+//    public void reverseOrder() {
+//        ListRecord reversedHead = head;
+//        ListRecord beforeReverse = head;
+//        ListRecord current = head;
+//
+//        if( comesBefore( current.data, reversedHead.data ) ) {
+//            current.next = reversedHead;
+//            reversedHead = current;
+//        } else {
+//            beforeReverse = reversedHead;
+//            while( (current.next != null) ) {
+//                if( comesBefore( current.next.data, beforeReverse.data )) {
+//
+//                }
+//            }
+//        }
+//
+//
+//    }
+
     public int count() {
         int count = 0;
         ListRecord current = head;

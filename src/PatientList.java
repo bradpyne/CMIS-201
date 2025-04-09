@@ -10,6 +10,7 @@ import static java.lang.Integer.parseInt;
 
 public class PatientList {
     private Patient[] patientArray = null;
+    private Tree patientTree = new Tree();
     private final int MAX_PATIENTS = 1000;
 
     private int indexOfIteration = -1;
@@ -19,12 +20,21 @@ public class PatientList {
         patientArray = new Patient[ MAX_PATIENTS ];
     }
 
+//    public boolean add( Patient pat ) {
+//        return arrayAddOrdered( pat );
+//    }
+
     public boolean add( Patient pat ) {
-        return arrayAddOrdered( pat );
+        patientTree.add( pat );
+        return true;
     }
 
+//    public Patient find( PatientIdentity patID ) {
+//        return binarySearch( patID );
+//    }
+
     public Patient find( PatientIdentity patID ) {
-        return binarySearch( patID );
+        return patientTree.find( new Patient( patID ) );
     }
 
     public void initIteration () {
