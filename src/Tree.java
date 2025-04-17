@@ -17,8 +17,17 @@ public class Tree {
         }
     }
 
+    public boolean hasNext() {
+        return iterationStack.hasNext();
+    }
+
     public Patient next() {
-        return iterationStack.pop().data;
+        TreeNode next = iterationStack.pop();
+        if( next == null ) {
+            return null;
+        } else {
+            return next.data;
+        }
     }
 
     public void add( Patient pat ) {

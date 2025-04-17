@@ -57,10 +57,15 @@ public class PatientList {
 //    }
     public void initIteration() {
         patientTree.initIteration();
+        indexOfIteration = 0;
     }
 
     public Patient next() {
-        return patientTree.next();
+        Patient nextPat = patientTree.next();
+        if(patientTree.hasNext()) {
+            indexOfIteration = -1;
+        }
+        return nextPat;
     }
 
     public Patient[] mergeSort( Patient[] inputArray ) {

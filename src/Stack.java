@@ -22,6 +22,10 @@ public class Stack<T> {
         return obj;
     }
 
+    public boolean hasNext() {
+        return stack == null;
+    }
+
     public void push( T element ) {
         if( stack == null ) {
             stack = new StackItem( element );
