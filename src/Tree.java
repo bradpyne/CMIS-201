@@ -1,7 +1,24 @@
 public class Tree {
     TreeNode root = null;
+    Stack<TreeNode> iterationStack =  new Stack<TreeNode>();
 
     public Tree() {
+    }
+
+    public void initIteration()  {
+        traverse(root);
+    }
+
+    private void traverse( TreeNode node ) {
+        if( node != null ) {
+            traverse(  node.right );
+            iterationStack.push( node );
+            traverse( node.left );
+        }
+    }
+
+    public Patient next() {
+        return iterationStack.pop().data;
     }
 
     public void add( Patient pat ) {
@@ -9,9 +26,9 @@ public class Tree {
         root = add( node, root );
     }
 
-    public Patient find( Patient pat ) {
-        TreeNode node = new TreeNode( pat );
-        node = find( node, root );
+    public Patient find( PatientIdentity patID ) {
+        TreeNode node;
+        node = find( patID, root );
         if ( node != null && node.data != null) {
             return node.data;
         } else {
@@ -31,13 +48,13 @@ public class Tree {
         return root;
     }
 
-    private TreeNode find( TreeNode node, TreeNode root ) {
-        if( root.data.getPatientIdentity().match( node.data.getPatientIdentity() ) ) {
-            return node;
-        } else if( node.data.getPatientIdentity().isLessThan( root.data.getPatientIdentity() )) {
-            return find( node, root.left );
-        } else if( root.data.getPatientIdentity().isLessThan( node.data.getPatientIdentity() )) {
-            return find( node, root.right );
+    private TreeNode find( PatientIdentity patID, TreeNode root ) {
+        if( root.data.getPatientIdentity().match( patID ) ) {
+            return root;
+        } else if( patID.isLessThan( root.data.getPatientIdentity() )) {
+            return find( patID, root.left );
+        } else if( root.data.getPatientIdentity().isLessThan( patID )) {
+            return find( patID, root.right );
         }
 
         return null;

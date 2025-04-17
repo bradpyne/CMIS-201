@@ -34,26 +34,33 @@ public class PatientList {
 //    }
 
     public Patient find( PatientIdentity patID ) {
-        return patientTree.find( new Patient( patID ) );
+        return patientTree.find( patID );
     }
 
-    public void initIteration () {
-        indexOfIteration = 0;
+//    public void initIteration () {
+//        indexOfIteration = 0;
+//    }
+//
+//    public Patient next() {
+//        int currentIndex = indexOfIteration;
+//        if( indexOfIteration == -1 ) {
+//            return null;
+//        } else {
+//            indexOfIteration++;
+//
+//            if( patientArray[indexOfIteration ] == null ) {
+//                indexOfIteration = -1;
+//            }
+//
+//            return patientArray[ currentIndex ];
+//        }
+//    }
+    public void initIteration() {
+        patientTree.initIteration();
     }
 
     public Patient next() {
-        int currentIndex = indexOfIteration;
-        if( indexOfIteration == -1 ) {
-            return null;
-        } else {
-            indexOfIteration++;
-
-            if( patientArray[indexOfIteration ] == null ) {
-                indexOfIteration = -1;
-            }
-
-            return patientArray[ currentIndex ];
-        }
+        return patientTree.next();
     }
 
     public Patient[] mergeSort( Patient[] inputArray ) {
