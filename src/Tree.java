@@ -6,29 +6,57 @@ public class Tree {
     }
 
     public void initIteration()  {
-        traverse(root);
+        iterationStack.empty();
+        findLeftmost( root );
+
+        //traverse(root);
     }
 
-    private void traverse( TreeNode node ) {
-        if( node != null ) {
-            traverse(  node.right );
-            iterationStack.push( node );
-            traverse( node.left );
+    private void findLeftmost( TreeNode root ) {
+        TreeNode current = root;
+        if( current != null && current.left == null ) iterationStack.push( current );
+        else {
+            while (current.left != null) {
+                iterationStack.push(current);
+                current = current.left;
+            }
+            iterationStack.push(current);
         }
     }
+
+//    private void traverse( TreeNode node ) {
+//        if( node != null ) {
+//            traverse(  node.right );
+//            iterationStack.push( node );
+//            traverse( node.left );
+//        }
+//    }
 
     public boolean hasNext() {
         return iterationStack.hasNext();
     }
 
     public Patient next() {
-        TreeNode next = iterationStack.pop();
-        if( next == null ) {
-            return null;
-        } else {
-            return next.data;
+        TreeNode node = iterationStack.pop();
+
+        if( node == null) return null;
+
+        if( node.right != null ) {
+            //node = node.right;
+            findLeftmost( node.right );
         }
+
+        return node.data;
     }
+
+//    public Patient next() {
+//        TreeNode next = iterationStack.pop();
+//        if( next == null ) {
+//            return null;
+//        } else {
+//            return next.data;
+//        }
+//    }
 
     public void add( Patient pat ) {
         TreeNode node = new TreeNode( pat );

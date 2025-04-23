@@ -48,7 +48,8 @@ class PatientListTest {
 
             patList.initIteration();
 
-            assertEquals( pat1, patList.next() );
+            Patient patNext = patList.next();
+            assertEquals( pat1, patNext );
         } catch( ParseException e) {
             throw new RuntimeException(e);
         }

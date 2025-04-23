@@ -8,6 +8,11 @@ public class Stack<T> {
         stack = null;
     }
 
+    public void empty() {
+        while( pop() != null ) {
+        }
+    }
+
     public T pop() {
         T obj = null;
         if( stack != null ) {
