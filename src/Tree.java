@@ -7,21 +7,20 @@ public class Tree {
 
     public void initIteration()  {
         iterationStack.empty();
-        findLeftmost( root );
+        if( root != null ) findLeftmost( root );
 
         //traverse(root);
     }
 
     private void findLeftmost( TreeNode root ) {
         TreeNode current = root;
-        if( current != null && current.left == null ) iterationStack.push( current );
-        else {
+
             while (current.left != null) {
                 iterationStack.push(current);
                 current = current.left;
             }
             iterationStack.push(current);
-        }
+
     }
 
 //    private void traverse( TreeNode node ) {
