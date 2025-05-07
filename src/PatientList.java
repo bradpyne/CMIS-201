@@ -10,14 +10,15 @@ import static java.lang.Integer.parseInt;
 
 public class PatientList {
     private Patient[] patientArray = null;
-    private Tree patientTree = new Tree();
+    private Tree patientTree;
     private final int MAX_PATIENTS = 1000;
 
     private int indexOfIteration = -1;
     private int nextOpenIndex = 0;
 
     public PatientList() {
-        patientArray = new Patient[ MAX_PATIENTS ];
+        //patientArray = new Patient[ MAX_PATIENTS ];
+        patientTree = new Tree();
     }
 
 //    public boolean add( Patient pat ) {
@@ -232,12 +233,12 @@ public class PatientList {
         return result;
     }
 
-
+    /*
     public void diag() {
         for( int i = 0; i < nextOpenIndex; i++) {
             System.out.println("@ Index: " + i + " -- " + patientArray[ i ].getPatientIdentity().getName().fullName() );
         }
-    }
+    } */
 
 
 }

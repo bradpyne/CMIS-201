@@ -1,15 +1,16 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Scanner;
 
 public class PrescriptionList {
     private ListRecord head;
     //private ListRecord tail;
     private ListRecord index;
+    Contraindications conflicts;
 
     public PrescriptionList() {
         head = null;
+        conflicts = new Contraindications();
         //tail = null;
     }
 
@@ -27,8 +28,9 @@ public class PrescriptionList {
     }
 
     public void add( Prescription pr ) {
+
         ListRecord newRecord = new ListRecord( pr );
-        ListRecord before = null;
+        ListRecord before;
         if( head == null ) {
             head = newRecord;
         } else {
@@ -46,6 +48,39 @@ public class PrescriptionList {
             }
         }
     }
+
+    public boolean importInteractions( String filename ) {
+        boolean result = true;
+        File file = new File( filename );
+        Scanner scanner;
+
+        try {
+            scanner = new Scanner( file );
+            while( scanner.hasNextLine() ) {
+                Contraindications.Interaction interaction = conflicts.makeInteraction( scanner.nextLine() ) ;
+                conflicts.storeInteraction( interaction );
+            }
+        } catch (FileNotFoundException e) {
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean hasInteraction( Prescription pr ) {
+        initIteration();
+        String str;
+
+        while( index != null  ) {  // && index.data.getIssueDate() < 1 year old
+            str = conflicts.hashString( pr.getScriptName(), next().getScriptName() );
+
+            if( conflicts.findInteraction( str ) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 //    public void reverseOrder() {
 //        ListRecord reversedHead = head;
@@ -102,7 +137,7 @@ public class PrescriptionList {
             return ( data.getIssueDate().compareTo( pr.getIssueDate() ) > 0 );
          */
 
-        private ListRecord head;
+        //private ListRecord head;
     }
 
 
