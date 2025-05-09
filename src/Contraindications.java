@@ -1,6 +1,6 @@
 public class Contraindications {
     Interaction[] contraindications;
-    final int TABLE_SIZE = 9973;
+    final int TABLE_SIZE = 96797;
 
     public Contraindications() {
         contraindications = new Interaction[ TABLE_SIZE ];
@@ -46,6 +46,7 @@ public class Contraindications {
     }
 
     public int hashCode(String str) {
+        str = str.toLowerCase();
 
         char[] chars = { str.charAt(0), str.charAt( str.length() / 3 ),
                 str.charAt( ((str.length() / 3) * 2) ), str.charAt( str.length() - 1 ) };
@@ -63,6 +64,9 @@ public class Contraindications {
         int count = 0;
         int index = hashCode( str ) % TABLE_SIZE;
 
+        if( hashString( contraindications[index] ).equals(hashString( item ) ) ) {
+            return;
+        }
         while( contraindications[index] != null && count < contraindications.length ) {
             index++;
             if(index == contraindications.length ) {

@@ -54,8 +54,6 @@ class PrescriptionTest {
 
     @Test
     void makePrescription() {
-        try {
-            Prescription test = makePrescription("Smith,Maria,1953-06-16,heptapone,2023-02-11,50,Agrawal");
-        }
+        Prescription test = Prescription.makePrescription("Smith,Maria,1953-06-16,heptapone,2023-02-11,50,Agrawal");
     }
 }

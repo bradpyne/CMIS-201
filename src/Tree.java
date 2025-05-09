@@ -1,6 +1,6 @@
 public class Tree {
     TreeNode root = null;
-    Stack<TreeNode> iterationStack =  new Stack<TreeNode>();
+    Stack<TreeNode> iterationStack = new Stack<>();
 
     public Tree() {
     }
@@ -98,7 +98,7 @@ public class Tree {
 
 
     private class TreeNode {
-        Patient data = null;
+        Patient data;
         TreeNode left, right;
 
         public TreeNode( Patient pat ) {

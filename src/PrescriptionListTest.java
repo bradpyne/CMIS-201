@@ -123,18 +123,21 @@ class PrescriptionListTest {
         plist.importInteractions("interactions.csv");
 
         assertTrue( plist.conflicts.findInteraction( plist.conflicts.hashString("eristostat","oxydrine"))) ;
+        assertFalse( plist.conflicts.findInteraction( plist.conflicts.hashString("ibuprofen", "tylenol") ) );
     }
 
     @Test
-    void hasInteraction() {
+    void checkInteraction() {
         try {
             PrescriptionList plist = new PrescriptionList();
             plist.conflicts.storeInteraction( plist.conflicts.makeInteraction( "a,b" ) );
             Prescription pre1 = new Prescription("a", df.parse("2025-03-01"), 1, "Dr. John Smith");
+            Prescription pre2 = new Prescription("c", df.parse("2025-03-01"), 1, "Dr. John Smith");
+            //Prescription pre3 = new Prescription("a", df.parse("2024-03-01"), 1, "Dr. John Smith");
 
-
-            plist.add( Prescription.makePrescription("b") );
-            assertTrue( plist.hasInteraction( pre1 ) );
+            plist.add( Prescription.makePrescription("Lname,Fname,2000-01-01,b,2025-01-01,50,Sub") );
+            assertEquals( "b",  plist.checkInteraction( pre1 ).getScriptName() );
+            assertNull( plist.checkInteraction( pre2 ) );
         } catch ( ParseException e ) {
             throw new RuntimeException();
         }

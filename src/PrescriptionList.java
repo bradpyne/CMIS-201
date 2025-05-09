@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class PrescriptionList {
     private ListRecord head;
@@ -28,7 +30,6 @@ public class PrescriptionList {
     }
 
     public void add( Prescription pr ) {
-
         ListRecord newRecord = new ListRecord( pr );
         ListRecord before;
         if( head == null ) {
@@ -66,42 +67,27 @@ public class PrescriptionList {
         return result;
     }
 
-    public boolean hasInteraction( Prescription pr ) {
+    public Prescription checkInteraction( Prescription pr ) {
         initIteration();
         String str;
+        Date date = new Date();
+        int maxDaysOld = 365;
 
-        while( index.data != null  ) {  // && index.data.getIssueDate() < 1 year old
+        while( index != null && index.data != null && ( difference_in_days( index.data.getIssueDate(), date ) ) <= maxDaysOld ) {  // && index.data.getIssueDate() < 1 year old
             str = conflicts.hashString( pr.getScriptName(), index.data.getScriptName() );
 
             if( conflicts.findInteraction( str ) ) {
-                return true;
+                return index.data;
             }
             next();
         }
-        return false;
+        return null;
     }
 
-
-
-//    public void reverseOrder() {
-//        ListRecord reversedHead = head;
-//        ListRecord beforeReverse = head;
-//        ListRecord current = head;
-//
-//        if( comesBefore( current.data, reversedHead.data ) ) {
-//            current.next = reversedHead;
-//            reversedHead = current;
-//        } else {
-//            beforeReverse = reversedHead;
-//            while( (current.next != null) ) {
-//                if( comesBefore( current.next.data, beforeReverse.data )) {
-//
-//                }
-//            }
-//        }
-//
-//
-//    }
+    private static int difference_in_days(Date date1, Date date2 ) {
+        return (int) (TimeUnit.DAYS.convert(Math.abs(date2.getTime() -
+                date1.getTime()), TimeUnit.MILLISECONDS));
+    }
 
     public int count() {
         int count = 0;

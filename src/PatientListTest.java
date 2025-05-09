@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Test;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -153,6 +152,35 @@ class PatientListTest {
         //expected result: first patient Alvarez, Barbara - most recent script fantamycin issued sept 2023
         assertEquals("fantamycin", prList.next().getScriptName() );
 
+    }
+
+    @Test
+    void recordInteractions() {
+        PatientList patList = new PatientList();
+        try {
+            Patient pat1 = new Patient(new PatientIdentity(new Name("Ernie", "Floyd"), dateFormatter.parse("1999-10-10")));
+            patList.add( pat1 );
+
+            Prescription pre1 = new Prescription("alphapone", dateFormatter.parse("2025-03-01"), 1, "Dr. John Smith");
+            Prescription pre2 = new Prescription("alphastat", dateFormatter.parse("2025-02-26"), 1, "Dr. John Smith");
+            Prescription pre3 = new Prescription("alphachlor", dateFormatter.parse("2025-02-26"), 1, "Dr. John Smith");
+            Prescription pre4 = new Prescription("alphasome", dateFormatter.parse("2025-02-26"), 1, "Dr. John Smith");
+            Prescription pre5 = new Prescription("alphatine", dateFormatter.parse("2025-02-26"), 1, "Dr. John Smith");
+            Prescription pre6 = new Prescription("alphadrill", dateFormatter.parse("2024-07-18"), 1, "Dr. John Smith");
+
+            patList.find( pat1.getPatientIdentity() ).getPrescriptionList().importInteractions( "interactions.csv" );
+
+            patList.find( pat1.getPatientIdentity() ).getPrescriptionList().add( pre1 );
+
+            patList.recordInteraction( patList.find(pat1.getPatientIdentity() ), pre2 );
+            patList.recordInteraction( patList.find(pat1.getPatientIdentity() ), pre3 );
+            patList.recordInteraction( patList.find(pat1.getPatientIdentity() ), pre4 );
+            patList.recordInteraction( patList.find(pat1.getPatientIdentity() ), pre5 );
+            patList.recordInteraction( patList.find(pat1.getPatientIdentity() ), pre6 );
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

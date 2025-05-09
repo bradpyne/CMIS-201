@@ -2,60 +2,30 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
-import static java.lang.Integer.parseInt;
-
 public class PatientList {
-    private Patient[] patientArray = null;
     private Tree patientTree;
-    private final int MAX_PATIENTS = 1000;
-
     private int indexOfIteration = -1;
-    private int nextOpenIndex = 0;
+
+    private Patient[] patientArray = null;
+    //private final int MAX_PATIENTS = 1000;
+    //private int nextOpenIndex = 0;
 
     public PatientList() {
         //patientArray = new Patient[ MAX_PATIENTS ];
         patientTree = new Tree();
     }
 
-//    public boolean add( Patient pat ) {
-//        return arrayAddOrdered( pat );
-//    }
-
     public boolean add( Patient pat ) {
         patientTree.add( pat );
         return true;
     }
 
-//    public Patient find( PatientIdentity patID ) {
-//        return binarySearch( patID );
-//    }
-
     public Patient find( PatientIdentity patID ) {
         return patientTree.find( patID );
     }
 
-//    public void initIteration () {
-//        indexOfIteration = 0;
-//    }
-//
-//    public Patient next() {
-//        int currentIndex = indexOfIteration;
-//        if( indexOfIteration == -1 ) {
-//            return null;
-//        } else {
-//            indexOfIteration++;
-//
-//            if( patientArray[indexOfIteration ] == null ) {
-//                indexOfIteration = -1;
-//            }
-//
-//            return patientArray[ currentIndex ];
-//        }
-//    }
     public void initIteration() {
         patientTree.initIteration();
         indexOfIteration = 0;
@@ -116,46 +86,11 @@ public class PatientList {
         return merged;
     }
 
-    private Patient binarySearch( PatientIdentity patID ) {
-        int upperIndex = nextOpenIndex  - 1;
-        int lowerIndex = 0;
-        int midIndex = ( upperIndex + lowerIndex ) / 2;
-
-        while ( upperIndex >= lowerIndex ) {
-            midIndex = (upperIndex + lowerIndex) / 2;
-
-            if ( patientArray[midIndex].getPatientIdentity().match( patID )) {
-                return patientArray[midIndex];
-            } else if( patientArray[midIndex].getPatientIdentity().isLessThan( patID ) ) {
-                lowerIndex = midIndex + 1;
-            } else {
-                upperIndex = midIndex - 1;
-            }
-        }
-        return null;
-    }
-
-    private boolean arrayAddOrdered( Patient pat ) {
-        int currentIndex = nextOpenIndex - 1;
-
-        if( nextOpenIndex >= patientArray.length ) {
-            return false;
-        }
-
-        while( currentIndex >= 0 && pat.getPatientIdentity().isLessThan( patientArray[ currentIndex ].getPatientIdentity() ) ) {
-            patientArray [ currentIndex + 1 ] = patientArray [ currentIndex ];
-            currentIndex--;
-        }
-        patientArray[ currentIndex + 1 ] = pat;
-        nextOpenIndex++;
-        return true;
-    }
-
     public boolean saveToFile ( String filename ) {
         initIteration();
         boolean result =  true;
         File file = new File ( filename );
-        FileWriter writer = null;
+        FileWriter writer;
 
         try {
             writer  = new FileWriter( file );
@@ -172,7 +107,7 @@ public class PatientList {
     public boolean importFromFile( String filename ) {
         boolean result = true;
         File file = new File( filename );
-        Scanner scanner = null;
+        Scanner scanner;
 
         try {
             scanner = new Scanner( file );
@@ -189,7 +124,7 @@ public class PatientList {
     public boolean importAndMergeSort( String filename ) {
         boolean result = true;
         File file = new File( filename );
-        Scanner scanner = null;
+        Scanner scanner;
         Patient[] pats = new Patient[1000];
         int index = 0;
 
@@ -213,17 +148,20 @@ public class PatientList {
     public boolean importPrescriptions( String filename ) {
         boolean result = true;
         File file = new File( filename );
-        Scanner scanner = null;
-        Prescription pr = null;
-        Patient pat = null;
+        Scanner scanner;
+        Prescription pr;
+        Patient pat;
 
         try {
             scanner = new Scanner( file );
+
             while( scanner.hasNextLine() ) {
                 String line = scanner.nextLine();
 
                 pr = Prescription.makePrescription( line );
                 pat = Patient.makePatient( line );
+
+                recordInteraction( pat, pr );
 
                 find( pat.getPatientIdentity() ).getPrescriptionList().add( pr );
             }
@@ -232,6 +170,90 @@ public class PatientList {
         }
         return result;
     }
+
+    public void recordInteraction( Patient pat, Prescription pr ) {
+        FileWriter fileWrite = null;
+        File file = new File ( "contraindications.csv" );
+
+        try {
+            Prescription interaction = ( find( pat.getPatientIdentity() ).getPrescriptionList() ).checkInteraction( pr );
+            if (interaction != null) {
+                fileWrite = new FileWriter(file, true);
+                String line = pat.toCSV() + "," + pr.getScriptName() + "," + interaction.getScriptName() + "\n";
+                fileWrite.write( line );
+                fileWrite.close();
+            }
+        } catch( IOException e ) {
+            throw new RuntimeException();
+        }
+
+    }
+
+
+    //METHODS USING OLD PATIENT ARRAY vs PATIENT TREE
+    /*
+    public boolean add( Patient pat ) {
+        return arrayAddOrdered( pat );
+    }
+
+    public Patient find( PatientIdentity patID ) {
+        return binarySearch( patID );
+    }
+
+    public void initIteration () {
+        indexOfIteration = 0;
+    }
+
+    public Patient next() {
+        int currentIndex = indexOfIteration;
+        if( indexOfIteration == -1 ) {
+            return null;
+        } else {
+            indexOfIteration++;
+
+            if( patientArray[indexOfIteration ] == null ) {
+                indexOfIteration = -1;
+            }
+
+            return patientArray[ currentIndex ];
+        }
+    }
+
+    private boolean arrayAddOrdered( Patient pat ) {
+        int currentIndex = nextOpenIndex - 1;
+
+        if( nextOpenIndex >= patientArray.length ) {
+            return false;
+        }
+
+        while( currentIndex >= 0 && pat.getPatientIdentity().isLessThan( patientArray[ currentIndex ].getPatientIdentity() ) ) {
+            patientArray [ currentIndex + 1 ] = patientArray [ currentIndex ];
+            currentIndex--;
+        }
+        patientArray[ currentIndex + 1 ] = pat;
+        nextOpenIndex++;
+        return true;
+    }
+
+    private Patient binarySearch( PatientIdentity patID ) {
+        int upperIndex = nextOpenIndex  - 1;
+        int lowerIndex = 0;
+        int midIndex = ( upperIndex + lowerIndex ) / 2;
+
+        while ( upperIndex >= lowerIndex ) {
+            midIndex = (upperIndex + lowerIndex) / 2;
+
+            if ( patientArray[midIndex].getPatientIdentity().match( patID )) {
+                return patientArray[midIndex];
+            } else if( patientArray[midIndex].getPatientIdentity().isLessThan( patID ) ) {
+                lowerIndex = midIndex + 1;
+            } else {
+                upperIndex = midIndex - 1;
+            }
+        }
+        return null;
+    }
+    */
 
     /*
     public void diag() {

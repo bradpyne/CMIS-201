@@ -1,6 +1,6 @@
 public class Name {
-    private String firstName = "";
-    private String lastName = "";
+    private String firstName;
+    private String lastName;
 
     Name( String name1, String name2) {
         firstName = name1;

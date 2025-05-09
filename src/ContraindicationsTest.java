@@ -19,12 +19,12 @@ public class ContraindicationsTest {
         String test = conflicts.hashString("A", "B");
         String test2 = conflicts.hashString("B", "A");
 
-        assertEquals("A#B", test);
+        assertEquals("a#b", test);
         assertEquals(test, test2);
 
         Contraindications.Interaction interaction = conflicts.makeInteraction("A,B");
         String test3 = conflicts.hashString( interaction );
-        assertEquals("A#B", test3);
+        assertEquals("a#b", test3);
         assertEquals(test3, test2);
     }
 
