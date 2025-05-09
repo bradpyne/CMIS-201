@@ -102,7 +102,7 @@ class PatientListTest {
             assertEquals( "C, A", sortedPats[8].getPatientIdentity().getName().fullName() );
             assertEquals( "D, A", sortedPats[12].getPatientIdentity().getName().fullName() );
             assertEquals( "D, D", sortedPats[15].getPatientIdentity().getName().fullName() );
-            patList.diag();
+            //patList.diag();
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

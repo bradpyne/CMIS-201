@@ -1,6 +1,6 @@
 public class Contraindications {
     Interaction[] contraindications;
-    final int TABLE_SIZE = 5009;
+    final int TABLE_SIZE = 9973;
 
     public Contraindications() {
         contraindications = new Interaction[ TABLE_SIZE ];
@@ -26,9 +26,11 @@ public class Contraindications {
         if( item != null ) {
             if( item.med1.compareTo(item.med2) < 0 ) {
                 str = item.med1 + "#" + item.med2;
+            } else {
+                str = item.med2 + "#" + item.med1;
             }
         }
-
+        str = str.toLowerCase();
         return str;
     }
 
@@ -39,13 +41,14 @@ public class Contraindications {
         } else {
             str = m2 + "#" + m1;
         }
-
+        str = str.toLowerCase();
         return str;
     }
 
     public int hashCode(String str) {
-        char[] chars = { str.charAt(0), str.charAt( str.length() / 4 ),
-                str.charAt( (str.length() / 4) * 3), str.charAt( str.length() - 1 ) };
+
+        char[] chars = { str.charAt(0), str.charAt( str.length() / 3 ),
+                str.charAt( ((str.length() / 3) * 2) ), str.charAt( str.length() - 1 ) };
 
         int hashed = ( chars[0] & 0xFF ) |
                         ( ( chars[1] & 0xFF ) << 8 ) |
@@ -57,21 +60,23 @@ public class Contraindications {
 
     public void storeInteraction( Interaction item ) {
         String str = hashString( item );
+        int count = 0;
         int index = hashCode( str ) % TABLE_SIZE;
 
-        while( contraindications[index] != null ) {
+        while( contraindications[index] != null && count < contraindications.length ) {
             index++;
             if(index == contraindications.length ) {
                 index = 0;
             }
+            count++;
         }
 
         contraindications[index] = item;
     }
 
     public boolean findInteraction( String str ) {
-        boolean hasInteraction = false;
-        int index = hashCode( str );
+        //boolean hasInteraction = false;
+        int index = hashCode( str ) % TABLE_SIZE;
         int count = 0;
 
 

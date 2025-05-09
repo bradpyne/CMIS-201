@@ -116,4 +116,28 @@ class PrescriptionListTest {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    void importInteractions() {
+        PrescriptionList plist = new PrescriptionList();
+        plist.importInteractions("interactions.csv");
+
+        assertTrue( plist.conflicts.findInteraction( plist.conflicts.hashString("eristostat","oxydrine"))) ;
+    }
+
+    @Test
+    void hasInteraction() {
+        try {
+            PrescriptionList plist = new PrescriptionList();
+            plist.conflicts.storeInteraction( plist.conflicts.makeInteraction( "a,b" ) );
+            Prescription pre1 = new Prescription("a", df.parse("2025-03-01"), 1, "Dr. John Smith");
+
+
+            plist.add( Prescription.makePrescription("b") );
+            assertTrue( plist.hasInteraction( pre1 ) );
+        } catch ( ParseException e ) {
+            throw new RuntimeException();
+        }
+
+    }
 }

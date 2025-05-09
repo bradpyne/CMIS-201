@@ -70,12 +70,13 @@ public class PrescriptionList {
         initIteration();
         String str;
 
-        while( index != null  ) {  // && index.data.getIssueDate() < 1 year old
-            str = conflicts.hashString( pr.getScriptName(), next().getScriptName() );
+        while( index.data != null  ) {  // && index.data.getIssueDate() < 1 year old
+            str = conflicts.hashString( pr.getScriptName(), index.data.getScriptName() );
 
             if( conflicts.findInteraction( str ) ) {
                 return true;
             }
+            next();
         }
         return false;
     }
